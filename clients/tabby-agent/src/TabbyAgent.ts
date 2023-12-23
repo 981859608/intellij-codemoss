@@ -212,7 +212,7 @@ export class TabbyAgent extends EventEmitter implements Agent {
 
   private async healthCheck(options?: AbortSignalOption): Promise<void> {
     const requestId = uuid();
-    const requestPath = "/v1/health";
+    const requestPath = "/luomacode-api/code/gen/intellij/v1/health";
     const requestUrl = this.config.server.endpoint + requestPath;
     const requestOptions = {
       signal: this.createAbortSignal(options),
@@ -489,7 +489,7 @@ export class TabbyAgent extends EventEmitter implements Agent {
             if (!this.api) {
               throw new Error("http client not initialized");
             }
-            const requestPath = "/v1/completions";
+            const requestPath = "/luomacode-api/code/gen/intellij/v1/completions";
             const requestOptions = {
               body: {
                 language: request.language,
@@ -610,7 +610,7 @@ export class TabbyAgent extends EventEmitter implements Agent {
       if (!this.api) {
         throw new Error("http client not initialized");
       }
-      const requestPath = "/v1/events";
+      const requestPath = "/luomacode-api/code/gen/intellij/v1/events";
       const requestOptions = {
         body: request,
         params: {

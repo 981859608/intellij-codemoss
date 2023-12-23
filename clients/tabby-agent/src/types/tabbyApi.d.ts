@@ -4,13 +4,13 @@
  */
 
 export interface paths {
-  "/v1/completions": {
+  "/luomacode-api/code/gen/intellij/v1/completions": {
     post: operations["completion"];
   };
-  "/v1/events": {
+  "/luomacode-api/code/gen/intellij/v1/events": {
     post: operations["event"];
   };
-  "/v1/health": {
+  "/luomacode-api/code/gen/intellij/v1/health": {
     get: operations["health"];
   };
   "/v1beta/search": {

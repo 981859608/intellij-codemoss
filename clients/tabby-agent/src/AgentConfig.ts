@@ -57,7 +57,8 @@ export type PartialAgentConfig = RecursivePartial<AgentConfig>;
 
 export const defaultAgentConfig: AgentConfig = {
   server: {
-    endpoint: "http://localhost:8080",
+    // endpoint: "http://localhost:8080",
+    endpoint: "http://testchatmoss.aihao123.cn",
     token: "",
     requestHeaders: {},
     requestTimeout: 30000, // 30s
