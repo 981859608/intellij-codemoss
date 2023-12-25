@@ -5,4 +5,4 @@ pluginManagement {
   }
 }
 
-rootProject.name = "intellij-CodeMoss"
+rootProject.name = "intellij-tabby"
