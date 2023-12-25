@@ -112,8 +112,7 @@ class AgentService : Disposable {
       suspend fun checkAndLog() {
         if (endpointSet && tokenSet) {
           val config = agent.getConfig()
-          // 如果config.server.endpoint = "http://testchatmoss.aihao123.cn" && config.server.token 为空，则可以记录日志
-          if (config.server?.endpoint == "http://testchatmoss.aihao123.cn" && config.server.token.isNullOrEmpty()) {
+          if (config.server?.endpoint == "http://codemoss.aihao123.cn" && config.server.token.isNullOrEmpty()) {
             logger.info("Starting client after setEndpoint and setToken completed config: $config")
             val notification = Notification(
               "com.tabbyml.intellijtabby.notification.warning",
