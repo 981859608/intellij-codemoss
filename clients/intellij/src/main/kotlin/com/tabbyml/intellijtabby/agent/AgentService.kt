@@ -104,14 +104,56 @@ class AgentService : Disposable {
     }
 
     scope.launch {
-      settings.serverEndpointState.collect {
-        setEndpoint(it)
-      }
-    }
+      // 创建两个标志位来跟踪setEndpoint和setToken是否已经完成
+      var endpointSet = false
+      var tokenSet = false
 
-    scope.launch {
-      settings.serverTokenState.collect {
-        setToken(it)
+      // 创建一个挂起函数来检查是否都设置完成，并执行日志记录
+      suspend fun checkAndLog() {
+        if (endpointSet && tokenSet) {
+          val config = agent.getConfig()
+          // 如果config.server.endpoint = "http://testchatmoss.aihao123.cn" && config.server.token 为空，则可以记录日志
+          if (config.server?.endpoint == "http://testchatmoss.aihao123.cn" && config.server.token.isNullOrEmpty()) {
+            logger.info("Starting client after setEndpoint and setToken completed config: $config")
+            val notification = Notification(
+              "com.tabbyml.intellijtabby.notification.warning",
+              "请设置授权码",
+              "需要设置授权码才能正常使用CodeMoss",
+              NotificationType.ERROR,
+            )
+            notification.addAction(
+              object : AnAction("打开设置") {
+                override fun actionPerformed(e: AnActionEvent) {
+//                  BrowserUtil.browse("https://tabby.tabbyml.com/docs/extensions/troubleshooting/#tabby-initialization-failed")
+                  ShowSettingsUtil.getInstance().showSettingsDialog(e.project, ApplicationConfigurable::class.java)
+                }
+              }
+            )
+            invokeLater {
+              initFailedNotification?.expire()
+              initFailedNotification = notification
+              Notifications.Bus.notify(notification)
+            }
+          }
+        }
+      }
+
+      // 收集serverEndpointState的变化，并设置endpointSet标志位
+      launch {
+        settings.serverEndpointState.collect {
+          setEndpoint(it)
+          endpointSet = true
+          checkAndLog() // 检查是否可以记录日志
+        }
+      }
+
+      // 收集serverTokenState的变化，并设置tokenSet标志位
+      launch {
+        settings.serverTokenState.collect {
+          setToken(it)
+          tokenSet = true
+          checkAndLog() // 检查是否可以记录日志
+        }
       }
     }
 
@@ -160,7 +202,7 @@ class AgentService : Disposable {
           message,
           NotificationType.WARNING,
         )
-        notification.addAction(object : AnAction("Open Settings...") {
+        notification.addAction(object : AnAction("打开设置") {
           override fun actionPerformed(e: AnActionEvent) {
             issueNotification?.expire()
             ShowSettingsUtil.getInstance().showSettingsDialog(e.project, ApplicationConfigurable::class.java)
@@ -261,7 +303,7 @@ class AgentService : Disposable {
     val appInfo = ApplicationInfo.getInstance()
     val appVersion = appInfo.fullVersion
     val appName = appInfo.fullApplicationName.replace(appVersion, "").trim()
-    val pluginId = "com.tabbyml.intellij-tabby"
+    val pluginId = "com.luomacode.CodeMoss"
     val pluginVersion = PluginManagerCore.getPlugin(PluginId.getId(pluginId))?.version
     val client = "$appName $pluginId $pluginVersion"
     return Agent.ClientProperties(

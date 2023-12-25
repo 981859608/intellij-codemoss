@@ -8,7 +8,7 @@ class ApplicationConfigurable : Configurable {
   private lateinit var settingsPanel: ApplicationSettingsPanel
 
   override fun getDisplayName(): String {
-    return "Tabby"
+    return "CodeMoss"
   }
 
   override fun createComponent(): JComponent {
@@ -20,33 +20,23 @@ class ApplicationConfigurable : Configurable {
     val settings = service<ApplicationSettingsState>()
     val keymapSettings = service<KeymapSettings>()
     return settingsPanel.completionTriggerMode != settings.completionTriggerMode ||
-        (settingsPanel.keymapStyle != keymapSettings.getCurrentKeymapStyle() &&
-            settingsPanel.keymapStyle != KeymapSettings.KeymapStyle.CUSTOMIZE) ||
         settingsPanel.serverEndpoint != settings.serverEndpoint ||
-        settingsPanel.serverToken != settings.serverToken ||
-        settingsPanel.nodeBinary != settings.nodeBinary ||
-        settingsPanel.isAnonymousUsageTrackingDisabled != settings.isAnonymousUsageTrackingDisabled
+        settingsPanel.serverToken != settings.serverToken
   }
 
   override fun apply() {
     val settings = service<ApplicationSettingsState>()
     val keymapSettings = service<KeymapSettings>()
     settings.completionTriggerMode = settingsPanel.completionTriggerMode
-    keymapSettings.applyKeymapStyle(settingsPanel.keymapStyle)
     settings.serverEndpoint = settingsPanel.serverEndpoint
     settings.serverToken = settingsPanel.serverToken
-    settings.nodeBinary = settingsPanel.nodeBinary
-    settings.isAnonymousUsageTrackingDisabled = settingsPanel.isAnonymousUsageTrackingDisabled
   }
 
   override fun reset() {
     val settings = service<ApplicationSettingsState>()
     val keymapSettings = service<KeymapSettings>()
     settingsPanel.completionTriggerMode = settings.completionTriggerMode
-    settingsPanel.keymapStyle = keymapSettings.getCurrentKeymapStyle()
     settingsPanel.serverEndpoint = settings.serverEndpoint
     settingsPanel.serverToken = settings.serverToken
-    settingsPanel.nodeBinary = settings.nodeBinary
-    settingsPanel.isAnonymousUsageTrackingDisabled = settings.isAnonymousUsageTrackingDisabled
   }
 }

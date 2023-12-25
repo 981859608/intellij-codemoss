@@ -29,7 +29,7 @@ class StatusBarWidgetFactory : StatusBarEditorBasedWidgetFactory() {
   }
 
   override fun getDisplayName(): String {
-    return "Tabby"
+    return "CodeMoss"
   }
 
   override fun createWidget(project: Project): StatusBarWidget {
@@ -42,9 +42,9 @@ class StatusBarWidgetFactory : StatusBarEditorBasedWidgetFactory() {
 
     return object : EditorBasedStatusBarPopup(project, false) {
       val updateStatusScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
-      val text = "Tabby"
+      val text = "CodeMoss"
       var icon: Icon = AnimatedIcon.Default()
-      var tooltip = "Tabby: Initializing"
+      var tooltip = "CodeMoss: Initializing"
 
       init {
         val settings = service<ApplicationSettingsState>()
@@ -96,12 +96,12 @@ class StatusBarWidgetFactory : StatusBarEditorBasedWidgetFactory() {
         when (state.agentStatus) {
           AgentService.Status.INITIALIZING, Agent.Status.NOT_INITIALIZED -> {
             icon = AnimatedIcon.Default()
-            tooltip = "Tabby: Initializing"
+            tooltip = "CodeMoss: Initializing"
           }
 
           AgentService.Status.INITIALIZATION_FAILED -> {
             icon = AllIcons.General.Error
-            tooltip = "Tabby: Initialization failed"
+            tooltip = "CodeMoss: Initialization failed"
           }
 
           Agent.Status.READY -> {
@@ -112,29 +112,29 @@ class StatusBarWidgetFactory : StatusBarEditorBasedWidgetFactory() {
             if (state.currentIssue != null && state.currentIssue !in muted) {
               icon = AllIcons.General.Warning
               tooltip = when (state.currentIssue) {
-                "slowCompletionResponseTime" -> "Tabby: Completion requests appear to take too much time"
-                "highCompletionTimeoutRate" -> "Tabby: Most completion requests timed out"
-                else -> "Tabby: Issues exist"
+                "slowCompletionResponseTime" -> "CodeMoss: Completion requests appear to take too much time"
+                "highCompletionTimeoutRate" -> "CodeMoss: Most completion requests timed out"
+                else -> "CodeMoss: Issues exist"
               }
             } else {
               when (state.settings.completionTriggerMode) {
                 ApplicationSettingsState.TriggerMode.AUTOMATIC -> {
                   if (state.ongoingCompletion == null) {
                     icon = AllIcons.Actions.Checked
-                    tooltip = "Tabby: Automatic code completion is enabled"
+                    tooltip = "CodeMoss: Welcome"
                   } else {
                     icon = AnimatedIcon.Default()
-                    tooltip = "Tabby: Generating code completions"
+                    tooltip = "CodeMoss: Welcome"
                   }
                 }
 
                 ApplicationSettingsState.TriggerMode.MANUAL -> {
                   if (state.ongoingCompletion == null) {
                     icon = AllIcons.General.ChevronRight
-                    tooltip = "Tabby: Standing by, please manually trigger code completion."
+                    tooltip = "CodeMoss: Standing by, please manually trigger code completion."
                   } else {
                     icon = AnimatedIcon.Default()
-                    tooltip = "Tabby: Generating code completions"
+                    tooltip = "CodeMoss: Generating code completions"
                   }
                 }
               }
@@ -143,12 +143,12 @@ class StatusBarWidgetFactory : StatusBarEditorBasedWidgetFactory() {
 
           Agent.Status.DISCONNECTED -> {
             icon = AllIcons.General.Error
-            tooltip = "Tabby: Cannot connect to Server, please check settings"
+            tooltip = "CodeMoss: Cannot connect to Server, please check settings"
           }
 
           Agent.Status.UNAUTHORIZED -> {
             icon = AllIcons.General.Warning
-            tooltip = "Tabby: Authorization required, please set your personal token in settings"
+            tooltip = "CodeMoss: Authorization required, please set your personal token in settings"
           }
         }
         invokeLater {

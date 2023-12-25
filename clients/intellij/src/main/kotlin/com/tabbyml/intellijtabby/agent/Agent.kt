@@ -116,7 +116,7 @@ class Agent : ProcessAdapter() {
 
   private fun getNodeScript(): File {
     val script =
-      PluginManagerCore.getPlugin(PluginId.getId("com.tabbyml.intellij-tabby"))?.pluginPath?.resolve("node_scripts/tabby-agent.js")
+      PluginManagerCore.getPlugin(PluginId.getId("com.luomacode.CodeMoss"))?.pluginPath?.resolve("node_scripts/tabby-agent.js")
         ?.toFile()
     if (script?.exists() == true) {
       logger.info("Node script path: ${script.absolutePath}")

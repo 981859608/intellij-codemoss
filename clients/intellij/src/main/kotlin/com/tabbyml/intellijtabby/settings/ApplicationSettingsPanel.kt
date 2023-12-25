@@ -41,7 +41,7 @@ private fun FormBuilder.addCopyableTooltip(text: String): FormBuilder {
 class ApplicationSettingsPanel {
   private val serverEndpointTextField = JBTextField()
   private val serverTokenPasswordField = JBPasswordField()
-  private val serverEndpointCheckConnectionButton = JButton("Check connection").apply {
+  private val serverEndpointCheckConnectionButton = JButton("检查链接").apply {
     addActionListener {
       val parentComponent = this@ApplicationSettingsPanel.mainPanel
       val agentService = service<AgentService>()
@@ -50,14 +50,14 @@ class ApplicationSettingsPanel {
       val task = object : Task.Modal(
         null,
         parentComponent,
-        "Check Connection",
+        "检查链接",
         true
       ) {
         lateinit var job: Job
         override fun run(indicator: ProgressIndicator) {
           job = agentService.scope.launch {
             indicator.isIndeterminate = true
-            indicator.text = "Checking connection..."
+            indicator.text = "检查链接..."
             settings.serverEndpoint = serverEndpoint
             settings.serverToken = serverToken
             var serverConfig = agentService.getConfig().server
@@ -70,8 +70,8 @@ class ApplicationSettingsPanel {
                 invokeLater(ModalityState.stateForComponent(parentComponent)) {
                   Messages.showInfoMessage(
                     parentComponent,
-                    "Successfully connected to the Tabby server.",
-                    "Check Connection Completed"
+                    "成功连接至服务器",
+                    "链接成功"
                   )
                 }
               }
@@ -118,40 +118,28 @@ class ApplicationSettingsPanel {
     }
   }
   private val serverEndpointPanel = FormBuilder.createFormBuilder()
-    .addLabeledComponent("Endpoint", serverEndpointTextField, 0, false)
+    .addLabeledComponent("授权码", serverTokenPasswordField, 0, false)
     .addCopyableTooltip(
       """
       <html>
-      A http or https URL of Tabby server endpoint.<br/>
-      If leave empty, server endpoint config in <i>~/.tabby-client/agent/config.toml</i> will be used.<br/>
-      Default to <i>http://localhost:8080</i>.
+      获取教程：
+      <i>https://chatmoss.feishu.cn/wiki/TQ6iwdCO4i9wZekrTnncgtYUnqh</i>
       </html>
       """.trimIndent()
     )
     .addSeparator()
-    .addLabeledComponent("Token", serverTokenPasswordField, 0, false)
+    .addLabeledComponent("服务端点(可不填)", serverEndpointTextField, 0, false)
     .addCopyableTooltip(
       """
       <html>
-      Set token here if your Tabby server requires authentication.
+      接口请求地址（不填默认是CodeMoss的服务端点）<br/>
+      如果想本地部署可以参考这个文档：<br/>
+      <i>https://chatmoss.feishu.cn/wiki/JAR4wCzHFi85XEkTe8bc18Qcnch</i>
       </html>
       """.trimIndent()
     )
     .addSeparator()
     .addComponent(serverEndpointCheckConnectionButton)
-    .panel
-
-  private val nodeBinaryTextField = JBTextField()
-  private val nodeBinaryPanel = FormBuilder.createFormBuilder()
-    .addComponent(nodeBinaryTextField)
-    .addCopyableTooltip(
-      """
-      <html>
-      Path to the Node binary for running the Tabby agent. The Node version must be >= 18.0.<br/>
-      If left empty, Tabby will attempt to find the Node binary in the <i>PATH</i> environment variable.<br/>
-      </html>
-      """.trimIndent()
-    )
     .panel
 
   private val completionTriggerModeAutomaticRadioButton = JBRadioButton("Automatic")
@@ -165,48 +153,6 @@ class ApplicationSettingsPanel {
     .addCopyableTooltip("Trigger automatically when you stop typing")
     .addComponent(completionTriggerModeManualRadioButton)
     .addCopyableTooltip("Trigger on-demand by pressing a shortcut")
-    .panel
-
-  private val keymapStyleDefaultRadioButton = JBRadioButton("Default")
-  private val keymapStyleTabbyStyleRadioButton = JBRadioButton("Tabby style")
-  private val keymapStyleCustomRadioButton = JBRadioButton("<html><a href=''>Customize...</a><html>").apply {
-    addActionListener {
-      ShowSettingsUtil.getInstance().showSettingsDialog(null, KeymapPanel::class.java) { panel ->
-        CoroutineScope(Dispatchers.IO).launch {
-          Thread.sleep(500) // FIXME: It seems that we need to wait for the KeymapPanel to be ready?
-          invokeLater(ModalityState.stateForComponent(panel)) {
-            panel.showOption("Tabby")
-          }
-        }
-      }
-    }
-    border = JBUI.Borders.emptyLeft(1)
-  }
-  private val keymapStyleRadioGroup = ButtonGroup().apply {
-    add(keymapStyleDefaultRadioButton)
-    add(keymapStyleTabbyStyleRadioButton)
-    add(keymapStyleCustomRadioButton)
-  }
-  private val keymapStylePanel: JPanel = FormBuilder.createFormBuilder()
-    .addComponent(keymapStyleDefaultRadioButton)
-    .addCopyableTooltip("<html>Use <i>Tab</i> to accept full completion, and use <i>Ctrl+Tab</i> to accept next line.</html>")
-    .addComponent(keymapStyleTabbyStyleRadioButton)
-    .addCopyableTooltip("<html>Use <i>Ctrl+Tab</i> to accept full completion, and use <i>Tab</i> to accept next line.</html>")
-    .addComponent(keymapStyleCustomRadioButton)
-    .panel
-
-  private val isAnonymousUsageTrackingDisabledCheckBox = JBCheckBox("Disable anonymous usage tracking")
-  private val isAnonymousUsageTrackingPanel: JPanel = FormBuilder.createFormBuilder()
-    .addComponent(isAnonymousUsageTrackingDisabledCheckBox)
-    .addCopyableTooltip(
-      """
-      <html>
-      Tabby collects aggregated anonymous usage data and sends it to the Tabby team to help improve our products.<br/>
-      Your code, generated completions, or any identifying information is never tracked or transmitted.<br/>
-      For more details on data collection, please check our <a href="https://tabby.tabbyml.com/docs/extensions/configurations#usage-collection">online documentation</a>.<br/>
-      </html>
-      """
-    )
     .panel
 
   private val resetMutedNotificationsButton = JButton("Reset \"Don't Show Again\" Notifications").apply {
@@ -223,15 +169,8 @@ class ApplicationSettingsPanel {
     .panel
 
   val mainPanel: JPanel = FormBuilder.createFormBuilder()
-    .addLabeledComponent("Server", serverEndpointPanel, 5, false)
+    .addLabeledComponent("", serverEndpointPanel, 5, false)
     .addSeparator(5)
-    .addLabeledComponent("Inline completion trigger", completionTriggerModePanel, 5, false)
-    .addSeparator(5)
-    .addLabeledComponent("Keymap", keymapStylePanel, 5, false)
-    .addSeparator(5)
-    .addLabeledComponent("<html>Node binary<br/>(Requires restart IDE)</html>", nodeBinaryPanel, 5, false)
-    .addSeparator(5)
-    .addLabeledComponent("Anonymous usage tracking", isAnonymousUsageTrackingPanel, 5, false)
     .apply {
       if (service<ApplicationSettingsState>().notificationsMuted.isNotEmpty()) {
         addSeparator(5)
@@ -253,28 +192,6 @@ class ApplicationSettingsPanel {
       serverTokenPasswordField.text = value
     }
 
-  var nodeBinary: String
-    get() = nodeBinaryTextField.text
-    set(value) {
-      nodeBinaryTextField.text = value
-    }
-
-  var keymapStyle: KeymapSettings.KeymapStyle
-    get() = if (keymapStyleDefaultRadioButton.isSelected) {
-      KeymapSettings.KeymapStyle.DEFAULT
-    } else if (keymapStyleTabbyStyleRadioButton.isSelected) {
-      KeymapSettings.KeymapStyle.TABBY_STYLE
-    } else {
-      KeymapSettings.KeymapStyle.CUSTOMIZE
-    }
-    set(value) {
-      when (value) {
-        KeymapSettings.KeymapStyle.DEFAULT -> keymapStyleDefaultRadioButton.isSelected = true
-        KeymapSettings.KeymapStyle.TABBY_STYLE -> keymapStyleTabbyStyleRadioButton.isSelected = true
-        KeymapSettings.KeymapStyle.CUSTOMIZE -> keymapStyleCustomRadioButton.isSelected = true
-      }
-    }
-
   var completionTriggerMode: ApplicationSettingsState.TriggerMode
     get() = if (completionTriggerModeAutomaticRadioButton.isSelected) {
       ApplicationSettingsState.TriggerMode.AUTOMATIC
@@ -286,11 +203,5 @@ class ApplicationSettingsPanel {
         ApplicationSettingsState.TriggerMode.AUTOMATIC -> completionTriggerModeAutomaticRadioButton.isSelected = true
         ApplicationSettingsState.TriggerMode.MANUAL -> completionTriggerModeManualRadioButton.isSelected = true
       }
-    }
-
-  var isAnonymousUsageTrackingDisabled: Boolean
-    get() = isAnonymousUsageTrackingDisabledCheckBox.isSelected
-    set(value) {
-      isAnonymousUsageTrackingDisabledCheckBox.isSelected = value
     }
 }
