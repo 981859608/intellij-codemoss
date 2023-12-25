@@ -1,104 +1,73 @@
-<div align="center">
+<h2 align="center"><img src="https://luomacode-1253302184.cos.ap-beijing.myqcloud.com/logo.png" height="64"><br>CodeMoss</h2>
+<p align="center"><strong>免费且具有和Copilot类似的补全功能</strong></p>
 
-# 🐾 Tabby
+[//]: # (<p align="center">)
 
-[![latest release](https://shields.io/github/v/release/TabbyML/tabby?sort=semver)](https://github.com/TabbyML/tabby/releases/latest)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://makeapullrequest.com)
-[![Docker pulls](https://img.shields.io/docker/pulls/tabbyml/tabby)](https://hub.docker.com/r/tabbyml/tabby)
+[//]: # (    <a href="https://marketplace.visualstudio.com/items?itemName=zhukunpeng.codemoss" alt="Marketplace version">)
 
-[![Slack Community](https://shields.io/badge/Join-Tabby%20Slack-red?logo=slack)](https://join.slack.com/t/tabbycommunity/shared_invite/zt-1xeiddizp-bciR2RtFTaJ37RBxr8VxpA)
-[![Office Hours](https://img.shields.io/badge/Book-Office%20Hours-purple?logo=googlecalendar&logoColor=white)](https://calendly.com/tabby_ml/chat-with-tabbyml)
+[//]: # (        <img src="https://img.shields.io/visual-studio-marketplace/v/zhukunpeng.codemoss?color=orange&label=VS%20Code%20Marketplace" />)
 
-</div>
+[//]: # (    </a>)
 
-Tabby is a self-hosted AI coding assistant, offering an open-source and on-premises alternative to GitHub Copilot. It boasts several key features:
-* Self-contained, with no need for a DBMS or cloud service.
-* OpenAPI interface, easy to integrate with existing infrastructure (e.g Cloud IDE).
-* Supports consumer-grade GPUs.
+[//]: # (    <a href="https://marketplace.visualstudio.com/items?itemName=zhukunpeng.codemoss" alt="Marketplace download count">)
+
+[//]: # (        <img src="https://img.shields.io/visual-studio-marketplace/stars/zhukunpeng.codemoss" />)
+
+[//]: # (    </a>)
+
+[//]: # (    <a href="https://marketplace.visualstudio.com/items?itemName=zhukunpeng.codemoss" alt="Marketplace download count">)
+
+[//]: # (        <img src="https://img.shields.io/visual-studio-marketplace/d/zhukunpeng.codemoss?color=blueviolet&label=Downloads" />)
+
+[//]: # (    </a>)
+
+[//]: # (</p>)
+
+---
 
 <p align="center">
-  <a target="_blank" href="https://tabbyml.github.io/tabby/playground"><img alt="Open in Playground" src="https://img.shields.io/badge/OPEN%20IN%20PLAYGROUND-blue?logo=xcode&style=for-the-badge&logoColor=green"></a>
+    <img width="500" src="https://luomacode-1253302184.cos.ap-beijing.myqcloud.com/demo.gif" />
 </p>
 
-<p align="center">
-  <img alt="Demo" src="https://user-images.githubusercontent.com/388154/230440226-9bc01d05-9f57-478b-b04d-81184eba14ca.gif">
-</p>
+---
 
-## 🔥 What's New
+## 解释
 
-* **12/15/2023** [v0.7.0](https://github.com/TabbyML/tabby/releases/tag/v0.7.0) released with team management and secured access!
-* **10/24/2023** ⛳️ Major updates for Tabby IDE plugins across [VSCode/Vim/IntelliJ](https://tabby.tabbyml.com/docs/extensions)!
-* **10/15/2023** RAG-based code completion is enabled by detail in [v0.3.0](https://github.com/TabbyML/tabby/releases/tag/v0.3.0)🎉! Check out the [blogpost](https://tabby.tabbyml.com/blog/2023/10/16/repository-context-for-code-completion/) explaining how Tabby utilizes repo-level context to get even smarter!
+为ChatMoss和ChatGPT中文版插件付费用户提供免费补全工具
 
+效果和Copilot只有一些差距，不过已经很高效了，后续我们会持续迭代优化，直至超越Copilot
 
-<details>
-  <summary>Archived</summary>
+做中国人自己的代码智能补全工具，以防代码泄露国外，和被国外卡脖子
 
-* **11/27/2023** [v0.6.0](https://github.com/TabbyML/tabby/releases/tag/v0.6.0) released!
-* **11/09/2023** [v0.5.5](https://github.com/TabbyML/tabby/releases/tag/v0.5.5) released! With a redesign of UI + performance improvement.
-* **10/04/2023** Check out the [model directory](https://tabby.tabbyml.com/docs/models/) for the latest models supported by Tabby.
-* **09/18/2023** Apple's M1/M2 Metal inference support has landed in [v0.1.1](https://github.com/TabbyML/tabby/releases/tag/v0.1.1)!
-* **08/31/2023** Tabby's first stable release [v0.0.1](https://github.com/TabbyML/tabby/releases/tag/v0.0.1) 🥳.
-* **08/28/2023** Experimental support for the [CodeLlama 7B](https://github.com/TabbyML/tabby/issues/370).
-* **08/24/2023** Tabby is now on [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/22379-tabby)!
+## 原理说明
 
-</details>
+我们采用国内本地A100显卡部署，采用DeepseekCoder-6.7B，相比 GitHub Copilot 需要把代码传到美国，更加安全
 
-## 👋 Getting Started
+如果您还想更加安全，采用本地部署我们同样也支持（详细可以下载插件之后，见插件设置页面）
 
-You can find our documentation [here](https://tabby.tabbyml.com/docs/getting-started).
-- 📚 [Installation](https://tabby.tabbyml.com/docs/installation/)
-- 💻 [IDE/Editor Extensions](https://tabby.tabbyml.com/docs/extensions/)
-- ⚙️ [Configuration](https://tabby.tabbyml.com/docs/configuration)
+## 生成质量
 
-### Run Tabby in 1 Minute
-The easiest way to start a Tabby server is by using the following Docker command:
+我们在各种与编码相关的基准测试上评估DeepSeek编码器。结果报告如下：
 
-```bash
-docker run -it \
-  --gpus all -p 8080:8080 -v $HOME/.tabby:/data \
-  tabbyml/tabby \
-  serve --model TabbyML/StarCoder-1B --device cuda
-```
-For additional options (e.g inference type, parallelism), please refer to the [documentation page](https://tabbyml.github.io/tabby).
+<img width="600" src="https://luomacode-1253302184.cos.ap-beijing.myqcloud.com/DeepSeek-Coder.png" />
 
-## 🤝 Contributing
+---
 
-### Get the Code
+## 声明
 
-```bash
-git clone --recurse-submodules https://github.com/TabbyML/tabby
-cd tabby
-```
+站在巨人肩膀上，本项目参考开源项目：https://tabby.tabbyml.com/
 
-If you have already cloned the repository, you could run the `git submodule update --recursive --init` command to fetch all submodules.
-
-### Build
-
-1. Set up the Rust environment by following this [tutorial](https://www.rust-lang.org/learn/get-started).
-
-2. Install the required dependencies:
-```bash
-# For MacOS
-brew install protobuf
-
-# For Ubuntu / Debian
-apt-get install protobuf-compiler libopenblas-dev
-```
-
-3. Now, you can build Tabby by running the command `cargo build`.
-
-### Start Hacking!
-... and don't forget to submit a [Pull Request](https://github.com/TabbyML/tabby/compare)
-
-## 🌍 Community
-- #️⃣ [Slack](https://join.slack.com/t/tabbycommunity/shared_invite/zt-1xeiddizp-bciR2RtFTaJ37RBxr8VxpA) - connect with the TabbyML community 
-- 🎤 [Twitter / X](https://twitter.com/Tabby_ML) - engage with TabbyML for all things possible 
-- 📚 [LinkedIn](https://www.linkedin.com/company/tabbyml/) - follow for the latest from the community 
-- 💌 [Newsletter](https://tinyletter.com/tabbyml/) - subscribe to unlock Tabby insights and secrets
+---
 
 
+# 👫 寻找组织
 
-### 🌟 Star History
+更多功能正在构建，敬请期待...
 
-[![Star History Chart](https://api.star-history.com/svg?repos=tabbyml/tabby&type=Date)](https://star-history.com/#tabbyml/tabby&Date)
+- 📡 有任何服务不稳定想反馈
+- 🏰 有想法交流CodeMoss
+- 🌈 获取最新CodeMoss消息
+
+- CodeMoss ①群【928335412】
+
+<img width="200" src="https://luomacode-1253302184.cos.ap-beijing.myqcloud.com/codemoss-qq1.pic.jpg" />
