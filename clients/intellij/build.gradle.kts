@@ -5,8 +5,8 @@ plugins {
   id("org.jetbrains.changelog") version "2.2.0"
 }
 
-group = "com.tabbyml"
-version = "1.2.0-dev"
+group = "com.luomacode"
+version = "1.0.0"
 
 repositories {
   mavenCentral()
@@ -33,13 +33,11 @@ tasks {
 
   patchPluginXml {
     sinceBuild.set("222")
-    untilBuild.set("233.*")
-    changeNotes.set(provider {
-      changelog.renderItem(
-        changelog.getLatest(),
-        org.jetbrains.changelog.Changelog.OutputType.HTML
-      )
-    })
+    untilBuild.set("999.*")
+    changeNotes.set("""
+            v1.0.0<br>
+            CodeMoss首发<br>
+        """.trimIndent())
   }
 
   val copyNodeScripts by register<Copy>("copyNodeScripts") {
