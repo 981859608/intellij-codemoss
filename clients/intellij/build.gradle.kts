@@ -43,7 +43,7 @@ tasks {
   val copyNodeScripts by register<Copy>("copyNodeScripts") {
     dependsOn(prepareSandbox)
     from("node_scripts")
-    into("build/idea-sandbox/plugins/intellij-tabby/node_scripts")
+    into("build/idea-sandbox/plugins/intellij-CodeMoss/node_scripts")
   }
 
   buildSearchableOptions {

@@ -50,15 +50,16 @@ class Agent : ProcessAdapter() {
   open class AgentException(message: String) : Exception(message)
 
   open class NodeBinaryException(message: String) : AgentException(
-    message = "$message Please install Node.js version >= 18.0, set the binary path in Tabby plugin settings or add bin path to system environment variable PATH, then restart IDE."
+//    message = "$message Please install Node.js version >= 18.0, set the binary path in Tabby plugin settings or add bin path to system environment variable PATH, then restart IDE."
+    message = "$message 请安装 Node.js version >= 18.0"
   )
 
   open class NodeBinaryNotFoundException : NodeBinaryException(
-    message = "Cannot find Node binary."
+    message = "找不到Node环境，需要先安装18以上的Node"
   )
 
   open class NodeBinaryInvalidVersionException(version: String) : NodeBinaryException(
-    message = "Node version is too old: $version."
+    message = "Node 版本太低: $version."
   )
 
   fun open() {
@@ -287,21 +288,21 @@ class Agent : ProcessAdapter() {
     suspendCancellableCoroutine { continuation ->
       val id = requestId++
       ongoingRequest[id] = { response ->
-        logger.debug("Agent response: $response")
+        logger.info("Agent response: $response")
         val result = gson.fromJson<T>(response, object : TypeToken<T>() {}.type)
         continuation.resumeWith(Result.success(result))
       }
       val data = listOf(id, mapOf("func" to func, "args" to args))
       val json = gson.toJson(data)
-      logger.debug("Agent request: $json")
+      logger.info("Agent request: $json")
       streamWriter.write(json + "\n")
       streamWriter.flush()
 
       continuation.invokeOnCancellation {
-        logger.debug("Agent request cancelled")
+        logger.info("Agent request cancelled")
         val cancellationId = requestId++
         ongoingRequest[cancellationId] = { response ->
-          logger.debug("Agent cancellation response: $response")
+          logger.info("Agent cancellation response: $response")
         }
         val cancellationData = listOf(cancellationId, mapOf("func" to "cancelRequest", "args" to listOf(id)))
         val cancellationJson = gson.toJson(cancellationData)

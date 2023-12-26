@@ -84,7 +84,7 @@ class AgentService : Disposable {
 
         val notification = Notification(
           "com.tabbyml.intellijtabby.notification.warning",
-          "Tabby initialization failed",
+          "CodeMoss initialization failed",
           "${e.message}",
           NotificationType.ERROR,
         )
