@@ -139,7 +139,13 @@ class ApplicationSettingsPanel {
       """.trimIndent()
     )
     .addSeparator()
-    .addComponent(serverEndpointCheckConnectionButton)
+    .addCopyableTooltip(
+      """
+      <html>
+      首次安装完后，需重启下IDE已加载资源
+      </html>
+      """.trimIndent()
+    )
     .panel
 
   private val completionTriggerModeAutomaticRadioButton = JBRadioButton("Automatic")

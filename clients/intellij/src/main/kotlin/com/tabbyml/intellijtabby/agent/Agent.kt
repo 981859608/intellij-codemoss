@@ -288,21 +288,21 @@ class Agent : ProcessAdapter() {
     suspendCancellableCoroutine { continuation ->
       val id = requestId++
       ongoingRequest[id] = { response ->
-        logger.info("Agent response: $response")
+        logger.debug("Agent response: $response")
         val result = gson.fromJson<T>(response, object : TypeToken<T>() {}.type)
         continuation.resumeWith(Result.success(result))
       }
       val data = listOf(id, mapOf("func" to func, "args" to args))
       val json = gson.toJson(data)
-      logger.info("Agent request: $json")
+      logger.debug("Agent request: $json")
       streamWriter.write(json + "\n")
       streamWriter.flush()
 
       continuation.invokeOnCancellation {
-        logger.info("Agent request cancelled")
+        logger.debug("Agent request cancelled")
         val cancellationId = requestId++
         ongoingRequest[cancellationId] = { response ->
-          logger.info("Agent cancellation response: $response")
+          logger.debug("Agent cancellation response: $response")
         }
         val cancellationData = listOf(cancellationId, mapOf("func" to "cancelRequest", "args" to listOf(id)))
         val cancellationJson = gson.toJson(cancellationData)
