@@ -14,11 +14,11 @@
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description><![CDATA[
-### English
+English<br>
 It is free and has Copilot-like completion features<br>
 Recommend the code snippet to be generated based on the code context<br/>
 It can help developers improve development efficiency<br>
-### 简体中文
+简体中文<br>
 免费且具有和Copilot类似的补全功能<br>
 帮助文档 https://h5.aihao123.cn/pages/app/help/index.html<br>
 <br>进群有福利<br>
